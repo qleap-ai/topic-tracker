@@ -1,11 +1,12 @@
 import time
 import json
+from google.cloud import storage
 
 import topic_clusterer
 
 all_clusters = {'episodes': []}
 topics = set()
-for coeff in range(0, 20):
+for coeff in range(0, 100):
     print("round ", coeff)
     period = 24
     offset = coeff * period * 3600
@@ -24,3 +25,10 @@ all_clusters['topics'] = list(topics)
 tmp_file = "/tmp/rank.json"
 with open(tmp_file, "w") as tmp:
     json.dump(all_clusters, tmp)
+
+bucket_name = "qleap.ai"
+storage_client = storage.Client()
+source_blob_name = "topics/topics.json"
+bucket = storage_client.bucket(bucket_name)
+blob = bucket.blob(source_blob_name)
+blob.upload_from_filename(tmp_file)

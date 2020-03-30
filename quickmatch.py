@@ -19,15 +19,15 @@ def decompose_text(text):
     return candidates
 
 
-def quick_match(text, mwe_set):
+def quick_match(text, mwe_dict):
     candidates = decompose_text(text)
     matched_mwes = {}
+    score = 0
     for cand in candidates:
-        if cand in mwe_set:
+        if cand in mwe_dict.keys():
+            score += mwe_dict[cand]
             if cand in matched_mwes.keys():
-                matched_mwes[cand] += 1
+                matched_mwes[cand] = (1 + matched_mwes[cand][0], matched_mwes[cand][1])
             else:
-                matched_mwes[cand] = 1
-    return matched_mwes
-
-
+                matched_mwes[cand] = (1, mwe_dict[cand])
+    return matched_mwes, score

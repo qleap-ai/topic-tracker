@@ -4,6 +4,7 @@ from datetime import datetime
 from functools import reduce
 
 import create_mwe_model
+import load_mwe_model
 from article_loader import ArticleLoader
 from quickmatch import quick_match
 import time
@@ -18,8 +19,8 @@ def compute_clusters(articles, model):
     for art in articles:
         my_clusters = {}
         for k in model:
-            my_res = quick_match(art['text'], model[k])
-            if len(my_res) > 0:
+            my_res, score = quick_match(art['text'], model[k])
+            if score > 2:
                 my_clusters[k] = {'mwes': my_res, 'k': k}
 
         if len(my_clusters) == 0:
@@ -29,7 +30,8 @@ def compute_clusters(articles, model):
             max_k = None
             for kk in my_clusters.keys():
                 my_mwes = my_clusters[kk]['mwes']
-                w = reduce(lambda x, y: x + y, my_mwes.values())
+                weighted = [x[0] * x[1] for x in my_mwes.values()]
+                w = reduce(lambda x, y: x + y, weighted)
                 if w > max_w:
                     max_w = w
                     max_k = kk
@@ -99,7 +101,7 @@ def rank_cluster(cluster):
         mwes = article['mwes']
         for mwe in mwes:
             fr_node = mwe
-            w = mwes[mwe]
+            w = mwes[mwe][0]*mwes[mwe][1]
             G.add_edge(fr_node, to_node, weight=w)
             G.add_edge(to_node, fr_node, weight=w)
 
@@ -126,8 +128,8 @@ def rank_clusters(clusters):
 
 
 def compute_ranked_clusters(fr, to):
-    base_model, pre_filter = create_mwe_model.build_model()
-
+    # base_model, pre_filter = create_mwe_model.build_model()
+    base_model, pre_filter = load_mwe_model.load()
     loader = ArticleLoader()
     articles = loader.load_articles(fr, to)
 
@@ -135,7 +137,8 @@ def compute_ranked_clusters(fr, to):
     pre_filter_articles = []
     neg_corp = []
     for art in articles:
-        if len(quick_match(art['text'], pre_filter)) > 0:
+        match, score = quick_match(art['text'], pre_filter)
+        if score > 2:
             pre_filter_articles.append(art)
         else:
             neg_corp.append(art)
