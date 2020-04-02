@@ -40,7 +40,7 @@ def strip():
         if 'text' not in art.keys():
             continue
         r = random()
-        if r > 0.1:
+        if r > 0.2:
             continue
 
         if art['id'] in ids:
@@ -54,4 +54,4 @@ def strip():
         json.dump(clean_list, tmp)
 
 
-trace()
+strip()
