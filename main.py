@@ -56,3 +56,6 @@ def run(event, context):
     save(tagged_articles, file_name)
     topics['file_names'] = list(file_names)
     save(topics, "topics.json")
+
+
+run("","")
