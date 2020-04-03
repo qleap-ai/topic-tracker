@@ -1,5 +1,7 @@
 import nltk
 
+# nltk.data.load('tokenizers/punkt/english.pickle')
+
 
 def tokenize(text):
     word_list = nltk.word_tokenize(text.replace("-", " "))
@@ -31,3 +33,5 @@ def quick_match(text, mwe_dict):
             else:
                 matched_mwes[cand] = (1, mwe_dict[cand])
     return matched_mwes, score
+
+
