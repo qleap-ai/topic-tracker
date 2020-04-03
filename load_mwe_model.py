@@ -28,7 +28,7 @@ def enhance_model(base_model):
 
 def load():
     ret = {}
-    with open('/Users/laemmel/tmp/news_mwes/Topics_Client_Corona_2020-M_c3__a4_r-31.csv', newline='\n') as csvfile:
+    with open('model/corona_mwes.json', newline='\n') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             # print(row['category'], row['feature'], row['normalized_chi2'])
