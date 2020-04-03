@@ -58,4 +58,4 @@ def run(event, context):
     save(topics, "topics.json")
 
 
-run("","")
+# run("","")
