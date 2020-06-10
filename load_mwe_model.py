@@ -34,8 +34,8 @@ def load():
             # print(row['category'], row['feature'], row['normalized_chi2'])
             k = row['category']
             if k in ret.keys():
-                ret[k][row['feature']] = float(row['normalized_chi2'])
+                ret[k][row['feature'].lower()] = float(row['normalized_chi2'])
             else:
-                ret[k] = {row['feature']: float(row['normalized_chi2'])}
+                ret[k] = {row['feature'].lower(): float(row['normalized_chi2'])}
     enhance_model(ret)
     return ret

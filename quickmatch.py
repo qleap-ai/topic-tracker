@@ -9,7 +9,7 @@ def tokenize(text):
 
 
 def decompose_text(text):
-    tokens = tokenize(text)
+    tokens = tokenize(text.lower())
     candidates = []
     for i in range(0, len(tokens) - 1):
         cand = tokens[i]
