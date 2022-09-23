@@ -29,7 +29,7 @@ msgpack==1.0.0
 networkx==2.4
 nltk==3.4.5
 numpy==1.18.2
-protobuf==3.11.3
+protobuf==3.18.3
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
 pyparsing==2.4.6
